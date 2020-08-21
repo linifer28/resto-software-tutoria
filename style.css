@@ -1,0 +1,23 @@
+@media all {
+	body {
+		font-family: sans-serif;
+		margin: 0;
+	}
+	#app {
+		padding: 1rem;
+	}
+	.header, .container {
+		display: flex;
+	}
+	.header {
+		margin-bottom: 1rem;
+	}
+
+	.header .compBuscadorProducto, .header .compImpuestos {
+		flex: 1;
+	}
+
+	.container .compProductos, .container .compPedido {
+		flex: 1;
+	}
+}

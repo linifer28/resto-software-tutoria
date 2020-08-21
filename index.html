@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<!-- Incluir la libreria -->
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div id="app">
+		<h2>{{title}}</h2>
+		<div id="viewOne" v-if="!cerrarPedido">
+			<!-- Header -->
+			<div class="header">
+				<div class="compBuscadorProducto">
+					<div class="compBuscadorProducto__input">
+						<input type="text" placeholder="Nombre, código" v-model="busqueda">
+						<button v-on:click="buscarProductos">
+							Buscar
+						</button>
+					</div>
+				</div>
+				<div class="compImpuestos">
+					<label>Imp.</label>
+					<input type="number" v-model="impuesto" v-on:keyup="observarImpuesto">
+				</div>
+			</div>
+			<div class="container">
+				<div class="compProductos">
+					<div class="compProductos__item" v-for="producto in resultado">
+						<p>{{producto.cod}} - {{producto.nombre}}</p>
+						<div class="compProductos__item-product">
+							<label>$ {{producto.precio}}</label>
+							<input type="number" name="" v-model="producto.cantidad">
+							<button v-on:click="agregarItem(producto)">Agregar</button>
+						</div>
+					</div>
+				</div>
+				<div class="compPedido">
+					<table class="compPedido__table">
+						<tbody>
+							<tr v-for="(producto, key) in pedido">
+								<td>
+									#{{key}} - {{producto.nombre}}
+								</td>
+								<td>
+									$ {{producto.precio}}
+								</td>
+								<td>
+									<input type="number" name="" v-model="producto.cantidad" v-on:keyup="observarCantidad(producto)">
+								</td>
+								<td>
+									<button v-on:click="quitarItem(key)">Quitar</button>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="4">Subtotal: $ {{subTotal}}</td>
+							</tr>
+							<tr>
+								<td colspan="2">Total: $ {{total}}</td>
+								<td colspan="2">
+									<button v-on:click="procCerrarPedido">Cerrar pedido</button>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div id="viewTwo" v-if="cerrarPedido">
+			<table class="compPedido__table">
+				<tbody>
+					<tr v-for="(producto, key) in pedido">
+						<td>
+							#{{key}} - {{producto.nombre}}
+						</td>
+						<td>
+							$ {{producto.precio}}
+						</td>
+						<td>
+							<input type="number" name="" v-model="producto.cantidad" readonly="" disabled="">
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="3">Total: $ {{total}}</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<button v-on:click="procVolver">Volver</button>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
