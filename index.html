@@ -81,13 +81,20 @@
 									<div class="form-row">
 										<div class="form-group col-md-3">		
 											<label for="plato_item">Plato / Item</label>
-											<select type="select"  class="form-control" name="plato_item" id="plato_item">
-												<option v:for="plato in platoList">{{plato.cod}} - {{plato.nombre}}</option>
+											<!-- Utilizo el v-model "plato" para capturar la información del select -->
+
+											<!-- Uso la función "watchPlato" para verificar si exite algun cambio en el select con el evento "v-on:change" -->
+											<select type="select"  class="form-control" name="plato_item" id="plato_item" v-model="plato" v-on:change="watchPlato">
+												<!-- Se utiliza el atributo ":value" que va a transformar el valor del option en el "objeto" plato -->
+												<option 
+													:value="plato"
+													v-for="plato in platoList">{{plato.cod}} - {{plato.nombre}}</option>
 											</select>	
 										</div>	
 										<div class="form-group col-md-3">	
 											<label for="precio">Precio</label>
-											<input type="text" class="form-control" name="precio" id="precio" readonly>
+											<!-- Luego e seleccionar obtiene el precio del plato seleccionado -->
+											<input type="text" class="form-control" name="precio" id="precio" v-model="plato.precio" readonly>
 										</div>	
 										<div class="form-group col-md-3">	
 											<label for="cantidad">Cantidad</label>

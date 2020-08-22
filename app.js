@@ -61,6 +61,9 @@ let app = new Vue({
 	},
 
 	methods: {
+		watchPlato: function (){
+			console.log("plato: ", this.plato)
+		},
 		abrirMesa: function() {
 			this.mesaGuardada = false
 		},
