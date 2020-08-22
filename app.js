@@ -1,155 +1,101 @@
-// Hacer copia limpia de un objeto
-// Evitando las referencias
-let copy = function (obj){
-	return JSON.parse( JSON.stringify (obj) );
-}
-
 let app = new Vue({
 	el: '#app',
 	data: {
-		title: "Sistema de pedidos",
-		busqueda: '',
-		productos: [
+			plato: {},
+			platoList: [
 			{
-				nombre:"Banana",
-				cod:"BNA01",
-				precio: 1000,
+				nombre:"Milanesa napolitana",
+				cod:"#Nap_01",
+				precio: 380,
 				cantidad:1
 			},
 			{
-				nombre:"Manzana",
-				cod:"BNN02",
-				precio: 33,
+				nombre:"Napolitana para 2",
+				cod:"#Nap_02",
+				precio: 650,
 				cantidad:1
 			},
 			{
-				nombre:"Naranja",
-				cod:"NNN033",
-				precio: 22,
+				nombre:"Pizzeta con muzzarella",
+				cod:"#Pzt_01",
+				precio: 320,
 				cantidad:1
 			},
 			{
-				nombre:"Kiwi",
-				cod:"NAA01",
-				precio: 140,
+				nombre:"Pizzeta con gustos",
+				cod:"Pzt_02",
+				precio: 400,
 				cantidad:1
-			}
-		],
-		resultado: [],
-		pedido: [],
-		subTotal: 0,
-		impuesto: 22,
-		total: 0,
-		cerrarPedido: false
+			},
+			{
+				nombre:"Refresco 1lt.",
+				cod:"#Ref_01",
+				precio: 200,
+				cantidad:1
+			},
+			{
+				nombre:"Cerveza 1lt.",
+				cod:"#Crv_01",
+				precio: 210,
+				cantidad:1
+			},
+			{
+				nombre:"Helado",
+				cod:"#Hld_01",
+				precio: 180,
+				cantidad:1
+			},
+			{
+				nombre:"Ensalada de frutas",
+				cod:"#Ens_01",
+				precio: 190,
+				cantidad:1
+			},
+				],		
+		mesaGuardada: true,
+		mesaActiva: true,
+		platoSeleccionado: {},
+
+		
+
 	},
+
 	methods: {
-		buscarProductos: function (){
-			let busqueda 	= this.busqueda.toLowerCase();
-			let resultado 	= []
-
-			for (let i = this.productos.length - 1; i >= 0; i--) {
-				let producto = this.productos[i]
-
-				// Normalizar búsqueda
-				let normalCond = producto.nombre.toLowerCase().includes(busqueda) || 
-					producto.cod.toLowerCase().includes(busqueda);
-				
-				if(normalCond){
-					resultado.push(producto)
-				}
-			}
-
-			// Voy a comunicar "resultado" a la view
-			this.resultado = resultado;
-			this.busqueda  = ''
-
-			console.log("arr - resultado:: ", resultado)
+		abrirMesa: function() {
+			this.mesaGuardada = false
 		},
-		agregarItem: function (item){
-			let copiaItem = copy(item)
-
-			console.log("copiaItem: ", copiaItem)
-
-			let find = false;
-
-			for (let i = this.pedido.length - 1; i >= 0; i--) {
-				// Encuentro un item del pedido que tiene el mismo cod
-				// Que el item a agregar
-				if(this.pedido[i].cod == copiaItem.cod){
-					// Sumo las cantidades
-					this.pedido[i].cantidad = parseInt(this.pedido[i].cantidad) + parseInt(copiaItem.cantidad)
-					// Le digo al flujo siguiente que encontre el item dentro de pedido
-					find = true;
-					// Corto la ejecución
-					break;
-				}
-			}
-
-			// Por defecto siempre agrego item al pedido 
-			// a menos que encuentre dentro del FOR
-			
-			if(!find){
-				this.pedido.push(copiaItem)
-			}
-			
-
-			// Calculo subtotal cuando agrego item al pedido
-			this.procSubTotal()
+		backPage: function() {
+			this.mesaGuardada = true
 		},
-		quitarItem: function (key){
-			// Eliminar el item dada un indice del array pedido
-			// El indice es la "key"
-			this.pedido.splice(key, 1)
+		//platoLista: function() {
+			//for (let i = this.platoList.length - 1; i >= 0; i--) {
+			//	let plato = this.platoList[i]
+//console.log("plato", plato)
+		//	}
+		//},
+		backPage: function() {
 
-			// Calculo subtotal cuando elimino item del pedido
-			this.procSubTotal()
 		},
-		procSubTotal: function (){
-			let suma = 0;
+		cerrarrMesa: function() {
 
-			for (let i = this.pedido.length - 1; i >= 0; i--) {
-				let item = this.pedido[i]
-
-				suma 	+= parseInt(item.cantidad) * item.precio
-			}
-			this.subTotal = suma;
-
-			// Despues que calculo el subtotal ejecuto el total con inpuesto
-			this.procTotal()
 		},
-		procTotal: function (){
-			this.total = (this.subTotal * (0.01 * parseInt(this.impuesto))) + this.subTotal;
+		agregarItem: function() {
+
 		},
-		procCerrarPedido: function (){
-			this.cerrarPedido = true;
+		saveChanges: function() {
+
 		},
-		procVolver: function (){
-			this.pedido 	= []
-			this.resultado  = []
-			this.total 	    = 0
-			this.subTotal   = 0
-			this.cerrarPedido = false;
-			this.busqueda 	= ''
-		},
-		observarCantidad: function (item){
-			item.cantidad = parseInt(item.cantidad)
 
-			if(isNaN(item.cantidad)){
-				item.cantidad = 0;
-			}
-
-			console.log("item: ", item)
-
-			this.procSubTotal()
-		},
-		observarImpuesto: function (){
-			this.impuesto = parseInt(this.impuesto)
-
-			if(isNaN(this.impuesto)){
-				this.impuesto = 0;
-			}
-
-			this.procSubTotal()
-		}
+		//saveChanges: function () {
+		//	this.mesaActiva = true
+		//}
+		//cerrarrMesa: function() {
+		//	this.mesaActiva = false
+		//}
 	}
+
 })
+
+		//{
+		
+	//}				

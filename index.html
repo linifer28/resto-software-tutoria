@@ -1,105 +1,132 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Resto-APP</title>
+	<!-- Libs -->
+		<!-- VueJS -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-	<!-- Incluir la libreria -->
-	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- VueRouter -->
+		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="style.css">
+		<!-- Axios -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+
+		<!-- Bootstrap UI -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+		<!-- Style custom -->
+		<link rel="stylesheet" type="text/css" href="style.css">
+	<!-- Libs / -->
 </head>
 <body>
 	<div id="app">
-		<h2>{{title}}</h2>
-		<div id="viewOne" v-if="!cerrarPedido">
-			<!-- Header -->
-			<div class="header">
-				<div class="compBuscadorProducto">
-					<div class="compBuscadorProducto__input">
-						<input type="text" placeholder="Nombre, código" v-model="busqueda">
-						<button v-on:click="buscarProductos">
-							Buscar
-						</button>
+		<!-- Vue instancia -->
+		<div class="container">
+			<div id="vistaMesas" v-if="mesaGuardada">
+				<div class="vistaMesas__cont">
+					<div class="vistaMesas__cont--button">
+						<button type="button" class="btn btn-outline-primary" v-on:click="abrirMesa">Abrir mesa</button>
+						<br>
+						<button type="button" class="btn btn-outline-danger" v-on:click="cerrarrMesa">Cerrar mesa</button>
+					</div>
+					<div class="vistaMesas__cont--view">
+						<div class="vistaMesas__cont--view--in">
+							<div id="Mesa_1" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 1</h5></div>
+							<div id="Mesa_2" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 2</h5></div>
+							<div id="Mesa_3" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 3</h5></div>
+							<div id="Mesa_4" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 4</h5></div>
+							<div id="Mesa_5" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 5</h5></div>
+							<div id="Mesa_6" class="mesaAct" v-if="mesaActiva"><h5>Mesa 6</h5></div>
+							<div id="Mesa_7" class="mesaAct" v-if="mesaActiva"><h5>Mesa 7</h5></div>
+							<div id="Mesa_8" class="mesaAct" v-if="mesaActiva"><h5>Mesa 8</h5></div>
+						</div>	
 					</div>
 				</div>
-				<div class="compImpuestos">
-					<label>Imp.</label>
-					<input type="number" v-model="impuesto" v-on:keyup="observarImpuesto">
-				</div>
+				<div class="vistaMesas__bottom">
+					<div class="form-group row" id="abcd">
+	    				<label for="colFormLabel" class="col-sm-2 col-form-label">Total diario:</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" id="colFormLabel"  name="diarioTotal" readonly>
+					    </div>
+ 					</div>
+				</div>				
 			</div>
-			<div class="container">
-				<div class="compProductos">
-					<div class="compProductos__item" v-for="producto in resultado">
-						<p>{{producto.cod}} - {{producto.nombre}}</p>
-						<div class="compProductos__item-product">
-							<label>$ {{producto.precio}}</label>
-							<input type="number" name="" v-model="producto.cantidad">
-							<button v-on:click="agregarItem(producto)">Agregar</button>
-						</div>
+			<div id="agregarMesa" v-if="!mesaGuardada">
+				<h5>Agregar/Editar Mesa</h5>
+				<div id="formContainer">
+					<div class="formContainer__form">
+							<div class="formContainer__clmns">
+								<form>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="nombreMesa">Nombre Mesa</label>
+											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa">
+												<option status=disabled>Seleccionar mesa</option>
+												<option>Mesa 1</option>
+												<option>Mesa 2</option>
+												<option>Mesa 3</option>
+												<option>Mesa 4</option>
+												<option>Mesa 5</option>
+												<option>Mesa 6</option>
+												<option>Mesa 7</option>
+												<option>Mesa 8</option>
+											</select>
+										</div>	
+										<div class="form-group col-md-6">	
+											<label for="cantPersonas">Cantidad Personas</label>
+											<input type="number" class="form-control" name="cantPersonas" id="cantPersonas">
+										</div>	
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-3">		
+											<label for="plato_item">Plato / Item</label>
+											<select type="select"  class="form-control" name="plato_item" id="plato_item">
+												<option v:for="plato in platoList">{{plato.cod}} - {{plato.nombre}}</option>
+											</select>	
+										</div>	
+										<div class="form-group col-md-3">	
+											<label for="precio">Precio</label>
+											<input type="text" class="form-control" name="precio" id="precio" readonly>
+										</div>	
+										<div class="form-group col-md-3">	
+											<label for="cantidad">Cantidad</label>
+											<input type="number" class="form-control" name="cantidad" id="cantidad">
+										</div>	
+										<div class="form-group col-md-3">
+											<button type="button" id="btn_add" class="btn btn-info" name="agregar" v-on:click="agregarItem">Agregar</button>
+										</div>	
+									</div>		
+								</form>
+							</div>
+							<div class="formContainer__clmn--aux">					
+							</div>
+					</div>
+					
+					<div class="formContainer__list">
+						<table class="table table-borderless">
+						   <tbody>
+						   		<tr>
+						      		<td>Item</td>
+						      		<td>Plato</td>
+						      		<td>Cant</td>
+						      		<td>Precio total</td>
+						    	</tr>
+						 	</tbody>
+						</table>
+					</div>
+					
+					<div class="formContainer__bottom">
+						<input type="text" name="total" readonly>
+						<button type="button" class="btn btn-outline-dark" v-on:click="backPage">Volver</button>
+						<button type="button" class="btn btn-primary" v-on:click="saveChanges">Guardar</button>
 					</div>
 				</div>
-				<div class="compPedido">
-					<table class="compPedido__table">
-						<tbody>
-							<tr v-for="(producto, key) in pedido">
-								<td>
-									#{{key}} - {{producto.nombre}}
-								</td>
-								<td>
-									$ {{producto.precio}}
-								</td>
-								<td>
-									<input type="number" name="" v-model="producto.cantidad" v-on:keyup="observarCantidad(producto)">
-								</td>
-								<td>
-									<button v-on:click="quitarItem(key)">Quitar</button>
-								</td>
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr>
-								<td colspan="4">Subtotal: $ {{subTotal}}</td>
-							</tr>
-							<tr>
-								<td colspan="2">Total: $ {{total}}</td>
-								<td colspan="2">
-									<button v-on:click="procCerrarPedido">Cerrar pedido</button>
-								</td>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div id="viewTwo" v-if="cerrarPedido">
-			<table class="compPedido__table">
-				<tbody>
-					<tr v-for="(producto, key) in pedido">
-						<td>
-							#{{key}} - {{producto.nombre}}
-						</td>
-						<td>
-							$ {{producto.precio}}
-						</td>
-						<td>
-							<input type="number" name="" v-model="producto.cantidad" readonly="" disabled="">
-						</td>
-					</tr>
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="3">Total: $ {{total}}</td>
-					</tr>
-					<tr>
-						<td colspan="3">
-							<button v-on:click="procVolver">Volver</button>
-						</td>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
+			</div>	
+		</div>	
 	</div>
-
+	<!-- Init App -->
 	<script type="text/javascript" src="app.js"></script>
+
 </body>
 </html>
