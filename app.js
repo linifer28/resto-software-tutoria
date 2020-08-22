@@ -73,9 +73,6 @@ let app = new Vue({
 //console.log("plato", plato)
 		//	}
 		//},
-		backPage: function() {
-
-		},
 		cerrarrMesa: function() {
 
 		},
