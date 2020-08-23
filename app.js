@@ -1,3 +1,7 @@
+let copy = function (obj){
+	return JSON.parse( JSON.stringify (obj) );
+}
+
 let app = new Vue({
 	el: '#app',
 	data: {
@@ -23,7 +27,7 @@ let app = new Vue({
 			},
 			{
 				nombre:"Pizzeta con gustos",
-				cod:"Pzt_02",
+				cod:"#Pzt_02",
 				precio: 400,
 				cantidad:1
 			},
@@ -61,9 +65,6 @@ let app = new Vue({
 	},
 
 	methods: {
-		watchPlato: function (){
-			console.log("plato: ", this.plato)
-		},
 		abrirMesa: function() {
 			this.mesaGuardada = false
 		},
@@ -79,11 +80,29 @@ let app = new Vue({
 		cerrarrMesa: function() {
 
 		},
-		agregarItem: function() {
+		agregarItem: function(item) {
+			let copiaItem = copy(item)
+
+			console.log("copiaItem: ", copiaItem)
 
 		},
 		saveChanges: function() {
 
+		},
+		watchPlato: function (){
+
+			console.log("plato: ", this.plato)
+		},
+		verrCantidad: function (item){
+			item.cantidad = parseInt(item.cantidad)
+
+			if(isNaN(item.cantidad)){
+				item.cantidad = 0;
+			}
+
+			console.log("item: ", item)
+
+			this.procSubTotal()
 		},
 
 		//saveChanges: function () {
