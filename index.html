@@ -18,6 +18,9 @@
 		<!-- Style custom -->
 		<link rel="stylesheet" type="text/css" href="style.css">
 	<!-- Libs / -->
+		<script type="text/javascript">
+			const API = 'https://crudcrud.com/api/d97282d03ec8498784c59538191791a0'
+		</script>
 </head>
 <body>
 	<div id="app">
@@ -32,12 +35,12 @@
 					</div>
 					<div class="vistaMesas__cont--view">
 						<div class="vistaMesas__cont--view--in">
-							<div id="Mesa_1" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 1</h5></div>
+							<div id="Mesa_1" class="mesaAct" v-if="!mesaActiva"><button type="button" class="tableButton">Mesa 1</button></div>
 							<div id="Mesa_2" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 2</h5></div>
 							<div id="Mesa_3" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 3</h5></div>
 							<div id="Mesa_4" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 4</h5></div>
 							<div id="Mesa_5" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 5</h5></div>
-							<div id="Mesa_6" class="mesaAct" v-if="mesaActiva"><h5>Mesa 6</h5></div>
+							<div id="Mesa_6" class="mesaAct" v-if="mesaActiva" v-on:click="abrirMesa"><h5>Mesa 6</h5></div>
 							<div id="Mesa_7" class="mesaAct" v-if="mesaActiva"><h5>Mesa 7</h5></div>
 							<div id="Mesa_8" class="mesaAct" v-if="mesaActiva"><h5>Mesa 8</h5></div>
 						</div>	
@@ -61,16 +64,11 @@
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label for="nombreMesa">Nombre Mesa</label>
-											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa">
-												<option status=disabled>Seleccionar mesa</option>
-												<option>Mesa 1</option>
-												<option>Mesa 2</option>
-												<option>Mesa 3</option>
-												<option>Mesa 4</option>
-												<option>Mesa 5</option>
-												<option>Mesa 6</option>
-												<option>Mesa 7</option>
-												<option>Mesa 8</option>
+											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa" v-model="mesa" v-on:change="watchMesa">
+												<option 
+													:value="mesa"
+													v-for="mesa in listaMesas">{{mesa.nombre}}
+												</option>
 											</select>
 										</div>	
 										<div class="form-group col-md-6">	
@@ -97,7 +95,7 @@
 										</div>	
 										<div class="form-group col-md-3">	
 											<label for="cantidad">Cantidad</label>
-											<input type="number" class="form-control" v-model="plato.cantidad" v-on:keyup="verCantidad(plato)" name="cantidad" id="cantidad">
+											<input type="number" class="form-control" v-model="plato.cantidad" name="cantidad" id="cantidad">
 										</div>	
 										<div class="form-group col-md-3">
 											<button type="button" id="btn_add" class="btn btn-info" name="agregar" v-on:click="agregarItem(plato)">Agregar</button>
@@ -112,18 +110,19 @@
 					<div class="formContainer__list">
 						<table class="table table-borderless">
 						   <tbody>
-						   		<tr>
+						   		<tr v-for="(plato, key) in pedido">
 						      		<td>{{plato.cod}}</td>
 						      		<td>{{plato.nombre}}</td>
-						      		<td>{{plato.cantidad}}</td>
-						      		<td>Precio total</td>
-						    	</tr>
-						 	</tbody>
+						      		<td><input type="number" class="form-control" v-model="plato.cantidad" name="cantidad" id="cantidad"></td>
+						      		<td>$ {{(plato.precio) * (plato.cantidad)}}</td>
+						      		<td><button class="btn btn-info" v-on:click="quitarPlato(key)">Quitar plato</button></td>
+						   	  	</tr>
+						 	</tbody>	
 						</table>
 					</div>
 					
 					<div class="formContainer__bottom">
-						<input type="text" name="total" readonly>
+						<input type="text" name="total" id="totPedido" readonly v-model="totalPedido">
 						<button type="button" class="btn btn-outline-dark" v-on:click="backPage">Volver</button>
 						<button type="button" class="btn btn-primary" v-on:click="saveChanges">Guardar</button>
 					</div>

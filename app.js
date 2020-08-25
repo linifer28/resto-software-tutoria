@@ -4,8 +4,8 @@ let copy = function (obj){
 
 let app = new Vue({
 	el: '#app',
-	data: {
-			plato: {},
+	data: {	
+				
 			platoList: [
 			{
 				nombre:"Milanesa napolitana",
@@ -55,12 +55,68 @@ let app = new Vue({
 				precio: 190,
 				cantidad:1
 			},
-				],		
+			],
+
+			listaMesas: [
+			{
+				nombre: "Mesa 1",
+				platos: "",
+				subTotMesa: "",
+				totalMesa: ""	
+			},
+			{
+				nombre: "Mesa 2",
+				platos: "",
+				subTotMesa: "",
+				totalMesa: ""
+			},
+			{
+				nombre: "Mesa 3",
+				platos: "",
+				subTotMesa: "",
+				totalMesa: ""
+			},
+			{
+				nombre: "Mesa 4",
+				platos: "",
+				subTotMesa: "",
+				totalMesa: ""
+			},
+			{
+				nombre: "Mesa 5",
+				platos: "",
+				subTotMesa: "",
+				totalMesa: ""
+			},
+			{
+				nombre: "Mesa 6",
+				platos: "",
+				subTotMesa: "",
+				totalMesa: ""
+			},
+			{
+				nombre: "Mesa 7",
+				platos: "",
+				subTotMesa: "",
+				totalMesa: ""
+			},
+			{
+				nombre: "Mesa 8",
+				platos: "",
+				subTotMesa: "",
+				totalMesa: ""
+			}			
+			],		
+
 		mesaGuardada: true,
 		mesaActiva: true,
 		platoSeleccionado: {},
-
-		
+		pedido: [],
+		plato: '',	
+		subTotalPlato: 0,
+		totalPedido: 0,
+		totPedido: 0,
+		mesa: '',
 
 	},
 
@@ -68,32 +124,96 @@ let app = new Vue({
 		abrirMesa: function() {
 			this.mesaGuardada = false
 		},
+
 		backPage: function() {
 			this.mesaGuardada = true
+			this.pedido = []
+			this.subTotalPlato = 0,
+			this.totalPedido = 0,
+			this.plato = ""
 		},
+
 		//platoLista: function() {
-			//for (let i = this.platoList.length - 1; i >= 0; i--) {
-			//	let plato = this.platoList[i]
-//console.log("plato", plato)
+		//	for (let i = this.platoList.length - 1; i >= 0; i--) {
+		//		let plato = this.platoList[i]
+		//		console.log("plato", plato)
 		//	}
 		//},
+
 		cerrarrMesa: function() {
 
 		},
 		agregarItem: function(item) {
+			if (mesa = "") {console.log ("elegir mesa")}
 			let copiaItem = copy(item)
+			
+			let find = false
 
-			console.log("copiaItem: ", copiaItem)
+			for (let i = this.pedido.length - 1; i >= 0; i--) {
+				// Encuentro un item del pedido que tiene el mismo cod
+				// Que el item a agregar
+				if(this.pedido[i].cod == copiaItem.cod){
+					// Sumo las cantidades
+					this.pedido[i].cantidad = parseInt(this.pedido[i].cantidad) + parseInt(copiaItem.cantidad)
+					// Le digo al flujo siguiente que encontre el item dentro de pedido
+					find = true;
+					// Corto la ejecución
+					break;
+				}
+			}
+
+			if(!find){	
+				this.pedido.push(copiaItem)
+			}	
+
+			let suma = 0
+			suma = (copiaItem.precio) * parseInt(copiaItem.cantidad)
+
+			this.subTotalPlato = suma
+
+			this.procTotalPedido()
+			
+		
+		},
+		
+		quitarPlato: function (key){
+			// Eliminar el item dada un indice del array pedido
+			// El indice es la "key"
+			this.pedido.splice(key,1)
+
+			// Calculo subtotal cuando elimino item del pedido
+			this.procTotalPedido()
+		},
+
+		procTotalPedido: function () {
+			let suma = 0;
+
+			for (let i = this.pedido.length - 1; i >= 0; i--) {
+				let item = this.pedido[i]
+
+				suma 	+= parseInt(item.cantidad) * item.precio
+			}
+			this.totalPedido = suma;
 
 		},
+
 		saveChanges: function() {
-
+			axios({
+				method:'post', 
+				url: API + '/mesas',
+			})
+			this.mesaGuardada = true
 		},
+
 		watchPlato: function (){
 
-			console.log("plato: ", this.plato)
 		},
-		verrCantidad: function (item){
+
+		watchMesa: function (){
+
+		},
+
+		verCantidad: function (item){
 			item.cantidad = parseInt(item.cantidad)
 
 			if(isNaN(item.cantidad)){
@@ -105,16 +225,7 @@ let app = new Vue({
 			this.procSubTotal()
 		},
 
-		//saveChanges: function () {
-		//	this.mesaActiva = true
-		//}
-		//cerrarrMesa: function() {
-		//	this.mesaActiva = false
-		//}
-	}
+		}
 
 })
-
-		//{
-		
-	//}				
+			
