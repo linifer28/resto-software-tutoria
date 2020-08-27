@@ -60,48 +60,56 @@ let app = new Vue({
 			listaMesas: [
 			{
 				nombre: "Mesa 1",
+				cantPersonas: "",
 				platos: "",
 				subTotMesa: "",
 				totalMesa: ""	
 			},
 			{
 				nombre: "Mesa 2",
+				cantPersonas: "",
 				platos: "",
 				subTotMesa: "",
 				totalMesa: ""
 			},
 			{
 				nombre: "Mesa 3",
+				cantPersonas: "",
 				platos: "",
 				subTotMesa: "",
 				totalMesa: ""
 			},
 			{
 				nombre: "Mesa 4",
+				cantPersonas: "",
 				platos: "",
 				subTotMesa: "",
 				totalMesa: ""
 			},
 			{
 				nombre: "Mesa 5",
+				cantPersonas: "",
 				platos: "",
 				subTotMesa: "",
 				totalMesa: ""
 			},
 			{
 				nombre: "Mesa 6",
+				cantPersonas: "",
 				platos: "",
 				subTotMesa: "",
 				totalMesa: ""
 			},
 			{
 				nombre: "Mesa 7",
+				cantPersonas: "",
 				platos: "",
 				subTotMesa: "",
 				totalMesa: ""
 			},
 			{
 				nombre: "Mesa 8",
+				cantPersonas: "",
 				platos: "",
 				subTotMesa: "",
 				totalMesa: ""
@@ -117,6 +125,7 @@ let app = new Vue({
 		totalPedido: 0,
 		totPedido: 0,
 		mesa: '',
+		cantPers: '',
 
 	},
 
@@ -130,7 +139,9 @@ let app = new Vue({
 			this.pedido = []
 			this.subTotalPlato = 0,
 			this.totalPedido = 0,
-			this.plato = ""
+			this.plato = "",
+			this.mesa = "",
+			this.cantPers = ""
 		},
 
 		//platoLista: function() {
@@ -144,7 +155,6 @@ let app = new Vue({
 
 		},
 		agregarItem: function(item) {
-			if (mesa = "") {console.log ("elegir mesa")}
 			let copiaItem = copy(item)
 			
 			let find = false
@@ -197,35 +207,49 @@ let app = new Vue({
 
 		},
 
-		saveChanges: function() {
-			axios({
-				method:'post', 
-				url: API + '/mesas',
-			})
-			this.mesaGuardada = true
+		saveChanges: function(){
+					
+					let listaMesas = copy(this.listaMesas);
+
+					// if(listaMesas._id){
+						// let id = this.agregarMesa._id;
+
+						// delete agregarMesa._id;
+
+						// axios.put(API + 'mesas/' + id, agregarMesa).then( (res) => {
+						// 	console.log("respuesta crud: ", res, app.state)
+
+						// 	// app.changeState('listado')
+						// })
+
+					// } else {
+						axios.post(API + '/mesas', 8).then( (res) => {
+							console.log("respuesta crud: ", res)
+
+							//app.changeState('listado')
+						})
+					// }
+
+					console.log("mesas:: ", listaMesas)
 		},
 
 		watchPlato: function (){
 
 		},
 
-		watchMesa: function (){
-
+		watchMesa: function (mesa){
+			console.log("mesa sel::", mesa.nombre)
 		},
 
-		verCantidad: function (item){
-			item.cantidad = parseInt(item.cantidad)
+		// verCantidad: function (item){
+		// 	item.cantidad = parseInt(item.cantidad)
 
-			if(isNaN(item.cantidad)){
-				item.cantidad = 0;
-			}
+		// 	if(isNaN(item.cantidad)){
+		// 		item.cantidad = 0;
+		// 	}
 
-			console.log("item: ", item)
+		// 	console.log("item: ", item)
 
-			this.procSubTotal()
-		},
-
-		}
-
-})
-			
+		// 	this.procSubTotal()
+		// },
+}})

@@ -19,13 +19,17 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 	<!-- Libs / -->
 		<script type="text/javascript">
-			const API = 'https://crudcrud.com/api/d97282d03ec8498784c59538191791a0'
+			const API = 'https://crudcrud.com/api/b06196f3b78e4f5b82cc368086623236'
 		</script>
+
 </head>
 <body>
 	<div id="app">
 		<!-- Vue instancia -->
 		<div class="container">
+			<!-- Invocar el componente de: "blog-listado" -->
+		<!-- 	<blog-listado v-if="state == 'listado'"></blog-listado>
+			<blog-form v-if="state == 'formulario'"></blog-form> -->
 			<div id="vistaMesas" v-if="mesaGuardada">
 				<div class="vistaMesas__cont">
 					<div class="vistaMesas__cont--button">
@@ -64,7 +68,7 @@
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label for="nombreMesa">Nombre Mesa</label>
-											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa" v-model="mesa" v-on:change="watchMesa">
+											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa" v-model="mesa" v:on-change="watchMesa">
 												<option 
 													:value="mesa"
 													v-for="mesa in listaMesas">{{mesa.nombre}}
@@ -73,16 +77,16 @@
 										</div>	
 										<div class="form-group col-md-6">	
 											<label for="cantPersonas">Cantidad Personas</label>
-											<input type="number" class="form-control" name="cantPersonas" id="cantPersonas">
+											<input type="number" class="form-control" name="cantPersonas" id="cantPersonas" min="0" step="1" max="8" v-model="mesa.cantPersonas">
 										</div>	
 									</div>
 									<div class="form-row">
 										<div class="form-group col-md-3">		
-											<label for="plato_item">Plato / Item</label>
+											<label for="plato_item">Código / Plato</label>
 											<!-- Utilizo el v-model "plato" para capturar la información del select -->
 
-											<!-- Uso la función "watchPlato" para verificar si exite algun cambio en el select con el evento "v-on:change" -->
-											<select type="select"  class="form-control" name="plato_item" id="plato_item" v-model="plato" v-on:change="watchPlato">
+											<!-- Uso la función "watchPlato" para verificar si existe algun cambio en el select con el evento "v-on:change" -->
+											<select type="select"  class="form-control" name="plato_item" id="plato_item" v-model="plato" >
 												<!-- Se utiliza el atributo ":value" que va a transformar el valor del option en el "objeto" plato -->
 												<option 
 													:value="plato"
@@ -95,7 +99,7 @@
 										</div>	
 										<div class="form-group col-md-3">	
 											<label for="cantidad">Cantidad</label>
-											<input type="number" class="form-control" v-model="plato.cantidad" name="cantidad" id="cantidad">
+											<input type="number" class="form-control" v-model="plato.cantidad" name="cantidad" id="cantidad" min="0" step="1" >
 										</div>	
 										<div class="form-group col-md-3">
 											<button type="button" id="btn_add" class="btn btn-info" name="agregar" v-on:click="agregarItem(plato)">Agregar</button>
@@ -108,17 +112,19 @@
 					</div>
 					
 					<div class="formContainer__list">
-						<table class="table table-borderless">
-						   <tbody>
-						   		<tr v-for="(plato, key) in pedido">
-						      		<td>{{plato.cod}}</td>
-						      		<td>{{plato.nombre}}</td>
-						      		<td><input type="number" class="form-control" v-model="plato.cantidad" name="cantidad" id="cantidad"></td>
-						      		<td>$ {{(plato.precio) * (plato.cantidad)}}</td>
-						      		<td><button class="btn btn-info" v-on:click="quitarPlato(key)">Quitar plato</button></td>
-						   	  	</tr>
-						 	</tbody>	
-						</table>
+						<div class="table-wrapper-scroll-y">
+							<table class="table table-borderless mb-0">
+							   <tbody>
+							   		<tr v-for="(plato, key) in pedido">
+							      		<td colspan="2">{{plato.cod}}</td>
+							      		<td colspan="3">{{plato.nombre}}</td>
+							      		<td colspan="2"><input type="number" class="form-control" v-model="plato.cantidad" name="cantidad" id="cantidad" min="1" step="1"></td>
+							      		<td colspan="3">$ {{(plato.precio) * (plato.cantidad)}}</td>
+						    	  		<td colspan="3"><button class="btn btn-info" v-on:click="quitarPlato(key)">Quitar plato</button></td>
+						   	  		</tr>
+						 		</tbody>	
+							</table>
+						</div>	
 					</div>
 					
 					<div class="formContainer__bottom">

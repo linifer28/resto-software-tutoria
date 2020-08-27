@@ -54,7 +54,7 @@
 		border: 1px solid green;
 	}
 	.col-form-label{
-		    text-align: end;
+		text-align: end;
 	}
 	#abcd {
 	}
@@ -94,7 +94,10 @@
 	.table-borderless {
 		overflow-y: hidden;
 	}
-	.formContainer__bottom {
-		position: fixed;
+	.table-wrapper-scroll-y {
+		display: block;
+		position: relative;
+		height: 12rem;
+		overflow: auto;
 	}
 }
