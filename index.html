@@ -40,7 +40,7 @@
 					</div>
 					<div class="col-8 vistaMesas__cont--view">
 						<div class="row row-cols-4 vistaMesas__cont--view--in">
-							<div class="col mesaAct" v-if="mesaActivada"  v-on:click="editarMesa" v-for="mesa in listaMesas"><h5>{{mesa.nombre}}</h5></div>
+							<div class="col mesaAct" v-if="mesa.estaActiva"  v-on:click="editarMesa" v-for="mesa in listaMesas"><h5>{{mesa.nombre}}</h5></div>
 						</div>	
 					</div>
 				</div>

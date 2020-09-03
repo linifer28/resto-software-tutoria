@@ -62,7 +62,8 @@ let app = new Vue({
 				nombre: "Mesa 1",
 				cantPersonas: "",
 				platos: "",
-				totalMesa: ""	
+				totalMesa: "",	
+				estaActiva: false,
 			},
 			{
 				nombre: "Mesa 2",
@@ -109,7 +110,6 @@ let app = new Vue({
 			],		
 
 		mesaGuardada: true,
-		mesaActivada: false,
 		platoSeleccionado: {},
 		pedido: [],
 		plato: '',	
@@ -131,7 +131,7 @@ let app = new Vue({
 			this.mesa = "",
 			this.cantPers = ""
 		},
-		
+
 		editarMesa: function() {
 			this.mesaGuardada = false
 			this.pedido = []
@@ -209,10 +209,13 @@ let app = new Vue({
 
 		saveChanges: function(){
 					
-					let listaMesas = copy(this.listaMesas);
+					
 					let mesaActiva = this.mesa;
+					this.mesa.estaActiva = true;
+					console.log ("Activa???", this.mesa.estaActiva);
 					let pedidoMesa = this.pedido;
 					mesaActiva.platos = pedidoMesa; 
+					let listaMesas = copy(this.listaMesas);
 
 					console.log("mesaActiva::", this.mesa);
 			
@@ -231,9 +234,6 @@ let app = new Vue({
 
 					this.mesaGuardada = true;
 					this.procTotalDiario()
-					this.mesaActivada = this.mesa.nombre;
-					this.mesaActivada = true;
-					console.log("se activo la mesa?? 3 ::", this.mesaActivada)
 					
 		},
 
