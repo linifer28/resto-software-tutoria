@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">	
 	<title>Resto-APP</title>
 	<!-- Libs -->
 		<!-- VueJS -->
@@ -19,7 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 	<!-- Libs / -->
 		<script type="text/javascript">
-			const API = 'https://crudcrud.com/api/b06196f3b78e4f5b82cc368086623236'
+			const API = 'https://crudcrud.com/api/668d01852fbc44ad964c4e05f45d7332/'
 		</script>
 
 </head>
@@ -31,30 +32,24 @@
 		<!-- 	<blog-listado v-if="state == 'listado'"></blog-listado>
 			<blog-form v-if="state == 'formulario'"></blog-form> -->
 			<div id="vistaMesas" v-if="mesaGuardada">
-				<div class="vistaMesas__cont">
-					<div class="vistaMesas__cont--button">
+				<div class="row vistaMesas__cont">
+					<div class="col-3 vistaMesas__cont--button">
 						<button type="button" class="btn btn-outline-primary" v-on:click="abrirMesa">Abrir mesa</button>
 						<br>
 						<button type="button" class="btn btn-outline-danger" v-on:click="cerrarrMesa">Cerrar mesa</button>
 					</div>
-					<div class="vistaMesas__cont--view">
-						<div class="vistaMesas__cont--view--in">
-							<div id="Mesa_1" class="mesaAct" v-if="!mesaActiva"><button type="button" class="tableButton">Mesa 1</button></div>
-							<div id="Mesa_2" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 2</h5></div>
-							<div id="Mesa_3" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 3</h5></div>
-							<div id="Mesa_4" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 4</h5></div>
-							<div id="Mesa_5" class="mesaAct" v-if="!mesaActiva"><h5>Mesa 5</h5></div>
-							<div id="Mesa_6" class="mesaAct" v-if="mesaActiva" v-on:click="abrirMesa"><h5>Mesa 6</h5></div>
-							<div id="Mesa_7" class="mesaAct" v-if="mesaActiva"><h5>Mesa 7</h5></div>
-							<div id="Mesa_8" class="mesaAct" v-if="mesaActiva"><h5>Mesa 8</h5></div>
+					<div class="col-8 vistaMesas__cont--view">
+						<div class="row row-cols-4 vistaMesas__cont--view--in">
+							<div class="col mesaAct" v-if="mesaActivada"  v-on:click="editarMesa" v-for="mesa in listaMesas"><h5>{{mesa.nombre}}</h5></div>
 						</div>	
 					</div>
 				</div>
-				<div class="vistaMesas__bottom">
-					<div class="form-group row" id="abcd">
-	    				<label for="colFormLabel" class="col-sm-2 col-form-label">Total diario:</label>
-					    <div class="col-sm-10">
-					      <input type="text" class="form-control" id="colFormLabel"  name="diarioTotal" readonly>
+				<div class="row vistaMesas__bottom">
+					<div class="col-6"></div>
+					<div class="col-5 form-group row">
+	    				<label for="colFormLabel" class="col-sm-7 col-form-label">Total diario: </label>
+					    <div class="col-sm-5">
+					      <input type="text" class="form-control" id="colFormLabel"  name="diarioTotal" readonly v-model="totalDiario">
 					    </div>
  					</div>
 				</div>				
@@ -68,7 +63,7 @@
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label for="nombreMesa">Nombre Mesa</label>
-											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa" v-model="mesa" v:on-change="watchMesa">
+											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa" v-model="mesa" >
 												<option 
 													:value="mesa"
 													v-for="mesa in listaMesas">{{mesa.nombre}}
@@ -106,8 +101,6 @@
 										</div>	
 									</div>		
 								</form>
-							</div>
-							<div class="formContainer__clmn--aux">					
 							</div>
 					</div>
 					

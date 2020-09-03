@@ -62,68 +62,60 @@ let app = new Vue({
 				nombre: "Mesa 1",
 				cantPersonas: "",
 				platos: "",
-				subTotMesa: "",
 				totalMesa: ""	
 			},
 			{
 				nombre: "Mesa 2",
 				cantPersonas: "",
 				platos: "",
-				subTotMesa: "",
-				totalMesa: ""
+				totalMesa: ""	
 			},
 			{
 				nombre: "Mesa 3",
 				cantPersonas: "",
 				platos: "",
-				subTotMesa: "",
-				totalMesa: ""
+				totalMesa: ""	
 			},
 			{
 				nombre: "Mesa 4",
 				cantPersonas: "",
 				platos: "",
-				subTotMesa: "",
-				totalMesa: ""
+				totalMesa: ""	
 			},
 			{
 				nombre: "Mesa 5",
 				cantPersonas: "",
 				platos: "",
-				subTotMesa: "",
-				totalMesa: ""
+				totalMesa: ""	
 			},
 			{
 				nombre: "Mesa 6",
 				cantPersonas: "",
 				platos: "",
-				subTotMesa: "",
-				totalMesa: ""
+				totalMesa: ""	
 			},
 			{
 				nombre: "Mesa 7",
 				cantPersonas: "",
 				platos: "",
-				subTotMesa: "",
-				totalMesa: ""
+				totalMesa: ""	
 			},
 			{
 				nombre: "Mesa 8",
 				cantPersonas: "",
 				platos: "",
-				subTotMesa: "",
-				totalMesa: ""
-			}			
+				totalMesa: ""	
+			},
 			],		
 
 		mesaGuardada: true,
-		mesaActiva: true,
+		mesaActivada: false,
 		platoSeleccionado: {},
 		pedido: [],
 		plato: '',	
 		subTotalPlato: 0,
 		totalPedido: 0,
-		totPedido: 0,
+		totalDiario: 0,
 		mesa: '',
 		cantPers: '',
 
@@ -132,6 +124,22 @@ let app = new Vue({
 	methods: {
 		abrirMesa: function() {
 			this.mesaGuardada = false
+			this.pedido = []
+			this.subTotalPlato = 0,
+			this.totalPedido = 0,
+			this.plato = "",
+			this.mesa = "",
+			this.cantPers = ""
+		},
+		
+		editarMesa: function() {
+			this.mesaGuardada = false
+			this.pedido = []
+			this.subTotalPlato = 0,
+			this.totalPedido = 0,
+			this.plato = "",
+			this.mesa = "",
+			this.cantPers = ""
 		},
 
 		backPage: function() {
@@ -143,13 +151,6 @@ let app = new Vue({
 			this.mesa = "",
 			this.cantPers = ""
 		},
-
-		//platoLista: function() {
-		//	for (let i = this.platoList.length - 1; i >= 0; i--) {
-		//		let plato = this.platoList[i]
-		//		console.log("plato", plato)
-		//	}
-		//},
 
 		cerrarrMesa: function() {
 
@@ -204,52 +205,60 @@ let app = new Vue({
 				suma 	+= parseInt(item.cantidad) * item.precio
 			}
 			this.totalPedido = suma;
-
 		},
 
 		saveChanges: function(){
 					
 					let listaMesas = copy(this.listaMesas);
+					let mesaActiva = this.mesa;
+					let pedidoMesa = this.pedido;
+					mesaActiva.platos = pedidoMesa; 
 
-					// if(listaMesas._id){
-						// let id = this.agregarMesa._id;
+					console.log("mesaActiva::", this.mesa);
+			
+					console.log("Hay pedido ::", pedidoMesa);
+					console.log("se activo ::", mesaActiva);
 
-						// delete agregarMesa._id;
+					axios.post(API + '/mesas', this.mesaActiva)
+						.then((res) => {
+							mesaActiva = res.data;
+						
+					  });
 
-						// axios.put(API + 'mesas/' + id, agregarMesa).then( (res) => {
-						// 	console.log("respuesta crud: ", res, app.state)
+					
+					
+					console.log("mesas:: ", listaMesas);
 
-						// 	// app.changeState('listado')
-						// })
+					this.mesaGuardada = true;
+					this.procTotalDiario()
+					this.mesaActivada = this.mesa.nombre;
+					this.mesaActivada = true;
+					console.log("se activo la mesa?? 3 ::", this.mesaActivada)
+					
+		},
 
-					// } else {
-						axios.post(API + '/mesas', 8).then( (res) => {
-							console.log("respuesta crud: ", res)
+		procTotalDiario: function () {
+			
+			totalDiario = this.totalDiario
 
-							//app.changeState('listado')
-						})
-					// }
+			let copiaTotalDiario = copy(this.totalDiario);
 
-					console.log("mesas:: ", listaMesas)
+			let sumaTotal = 0;
+
+			sumaTotal 	+= this.totalPedido + copiaTotalDiario;
+			
+			this.totalDiario = sumaTotal;
+
+			console.log("totalDiario::", sumaTotal)
+
 		},
 
 		watchPlato: function (){
 
 		},
 
-		watchMesa: function (mesa){
+		watchMesa: function (){
 			console.log("mesa sel::", mesa.nombre)
 		},
 
-		// verCantidad: function (item){
-		// 	item.cantidad = parseInt(item.cantidad)
-
-		// 	if(isNaN(item.cantidad)){
-		// 		item.cantidad = 0;
-		// 	}
-
-		// 	console.log("item: ", item)
-
-		// 	this.procSubTotal()
-		// },
 }})

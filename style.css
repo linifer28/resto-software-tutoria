@@ -14,17 +14,15 @@
 		height: 70vh;
 	}
 	.vistaMesas__cont--view {
-		flex: 3;
 		border: 1.5px solid black;
-		margin: 1.5rem;
+		margin-top: 1.5rem;
+		margin-right: 1.5rem;
+	}
+	.vistaMesas__bottom {
+		margin-top: 1rem;
 	}
 	.vistaMesas__cont--button {
-		flex: 1;
 		text-align: center;
-	}
-	.vistaMesas__cont--view--in {
-		display: flex;
-		margin: 1.5rem;
 	}
 	.mesaAct {
 		width: 10rem;
@@ -55,8 +53,6 @@
 	}
 	.col-form-label{
 		text-align: end;
-	}
-	#abcd {
 	}
 	#agregarMesa {
 		border: 1.5px solid black;
