@@ -107,7 +107,9 @@ let app = new Vue({
 				platos: "",
 				totalMesa: ""	
 			},
-			],		
+			],
+		
+		mesasActiva:[],		
 
 		mesaGuardada: true,
 		platoSeleccionado: {},
@@ -132,14 +134,14 @@ let app = new Vue({
 			this.cantPers = ""
 		},
 
-		editarMesa: function() {
+		editarMesa: function(id) {
+			axios.get(API + '/mesas/' + id).then( (res) => {
+			this.mesaActiva = res.data
+			this.pedido = res.data.platos
+			this.mesa = {nombre: res.data.nombre}
+			this.cantPers = res.data.cantPersonas
+			})
 			this.mesaGuardada = false
-			this.pedido = []
-			this.subTotalPlato = 0,
-			this.totalPedido = 0,
-			this.plato = "",
-			this.mesa = "",
-			this.cantPers = ""
 		},
 
 		backPage: function() {
@@ -152,7 +154,10 @@ let app = new Vue({
 			this.cantPers = ""
 		},
 
-		cerrarrMesa: function() {
+		cerrarMesa: function(id) {
+			axios.delete(API + '/mesas/' + id).then( (res) => {
+			window.location.reload()
+			})
 
 		},
 		agregarItem: function(item) {
@@ -213,18 +218,25 @@ let app = new Vue({
 					let mesaActiva = this.mesa;
 					this.mesa.estaActiva = true;
 					console.log ("Activa???", this.mesa.estaActiva);
+					
 					let pedidoMesa = this.pedido;
 					mesaActiva.platos = pedidoMesa; 
+					
 					let listaMesas = copy(this.listaMesas);
+					mesaActiva.totalMesa = this.totalPedido;
+
+					mesaActiva.cantPersonas = this.cantPers;
 
 					console.log("mesaActiva::", this.mesa);
 			
 					console.log("Hay pedido ::", pedidoMesa);
 					console.log("se activo ::", mesaActiva);
 
-					axios.post(API + '/mesas', this.mesaActiva)
+					
+					axios.post(API + '/mesas', mesaActiva)
 						.then((res) => {
 							mesaActiva = res.data;
+							window.location.reload() //recarga toda la pagina luego de guardar
 						
 					  });
 
@@ -261,4 +273,17 @@ let app = new Vue({
 			console.log("mesa sel::", mesa.nombre)
 		},
 
-}})
+
+},
+		mounted: function () {
+			axios.get (API + "/mesas").then((res) => {
+				if(res.data) {this.mesasActiva = res.data}
+			})
+		} 		
+})
+
+// //- Guarda en memoria
+// window.localStorage.setItem('totalDiario', this.totalDiario)
+
+// - Obtengo de la memoria
+// this.totalDiario = window.localStorage.getItem('totalDiario')

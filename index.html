@@ -20,7 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 	<!-- Libs / -->
 		<script type="text/javascript">
-			const API = 'https://crudcrud.com/api/668d01852fbc44ad964c4e05f45d7332/'
+			const API = 'https://crudcrud.com/api/eca1ebf2efbf4fe2b6dfd2e7e3959f8e'
 		</script>
 
 </head>
@@ -36,11 +36,15 @@
 					<div class="col-3 vistaMesas__cont--button">
 						<button type="button" class="btn btn-outline-primary" v-on:click="abrirMesa">Abrir mesa</button>
 						<br>
-						<button type="button" class="btn btn-outline-danger" v-on:click="cerrarrMesa">Cerrar mesa</button>
 					</div>
 					<div class="col-8 vistaMesas__cont--view">
 						<div class="row row-cols-4 vistaMesas__cont--view--in">
-							<div class="col mesaAct" v-if="mesa.estaActiva"  v-on:click="editarMesa" v-for="mesa in listaMesas"><h5>{{mesa.nombre}}</h5></div>
+							<div class="col mesaAct" v-if="mesa.estaActiva"   v-for="mesa in mesasActiva"> 
+								<!-- v-on:click="editarMesa" -->
+							<h5>{{mesa.nombre}}</h5>
+							<button v-on:click="editarMesa(mesa._id)">EDITAR MESA</button>
+							<button v-on:click="cerrarMesa(mesa._id)">CERRAR MESA</button>
+						</div>
 						</div>	
 					</div>
 				</div>
@@ -63,16 +67,18 @@
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label for="nombreMesa">Nombre Mesa</label>
-											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa" v-model="mesa" >
+											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa" v-model="mesa">
+												<!-- :track-by="nombre" -->
 												<option 
-													:value="mesa"
-													v-for="mesa in listaMesas">{{mesa.nombre}}
+													:value="m"
+													:key="m.nombre"
+													v-for="m in listaMesas">{{m.nombre}}
 												</option>
 											</select>
 										</div>	
 										<div class="form-group col-md-6">	
 											<label for="cantPersonas">Cantidad Personas</label>
-											<input type="number" class="form-control" name="cantPersonas" id="cantPersonas" min="0" step="1" max="8" v-model="mesa.cantPersonas">
+											<input type="number" class="form-control" name="cantPersonas" id="cantPersonas" min="0" step="1" max="8" v-model="cantPers">
 										</div>	
 									</div>
 									<div class="form-row">
