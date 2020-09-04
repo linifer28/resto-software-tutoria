@@ -68,11 +68,12 @@
 										<div class="form-group col-md-6">
 											<label for="nombreMesa">Nombre Mesa</label>
 											<select type="select" class="form-control" name="nombreMesa" id="nombreMesa" v-model="mesa">
-												<!-- :track-by="nombre" -->
+												<!-- Utilizar el match por la propiedad nombre con el key -->
 												<option 
+													v-for="m in listaMesas"
 													:value="m"
 													:key="m.nombre"
-													v-for="m in listaMesas">{{m.nombre}}
+													>{{m.nombre}}
 												</option>
 											</select>
 										</div>	

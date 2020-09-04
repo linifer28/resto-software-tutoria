@@ -137,8 +137,15 @@ let app = new Vue({
 		editarMesa: function(id) {
 			axios.get(API + '/mesas/' + id).then( (res) => {
 			this.mesaActiva = res.data
-			this.pedido = res.data.platos
-			this.mesa = {nombre: res.data.nombre}
+			this.pedido = res.data.platos			
+			// Para hacer el match por objeto tener el obj completo
+			this.mesa = {
+				nombre: res.data.nombre,
+				cantPersonas: "",
+				platos: "",
+				totalMesa: ""	
+			}
+			
 			this.cantPers = res.data.cantPersonas
 			})
 			this.mesaGuardada = false
