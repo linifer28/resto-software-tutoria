@@ -71,6 +71,10 @@
 		margin: 0.5rem;
 		margin-left: 1.5rem;
 	}
+	.btn-secondary {
+		width: 4rem;
+		font-size: 0.7rem;
+	}
 	.formContainer__list {
 		width: 100%;
 		height: 30vh;

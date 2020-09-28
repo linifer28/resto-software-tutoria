@@ -63,7 +63,6 @@ let app = new Vue({
 				cantPersonas: "",
 				platos: "",
 				totalMesa: "",	
-				estaActiva: false,
 			},
 			{
 				nombre: "Mesa 2",
@@ -254,6 +253,7 @@ let app = new Vue({
 					this.mesaGuardada = true;
 					this.procTotalDiario()
 					
+					
 		},
 
 		procTotalDiario: function () {
@@ -270,16 +270,11 @@ let app = new Vue({
 
 			console.log("totalDiario::", sumaTotal)
 
+			// axios.post(API + '/totalDiario', sumaTotal)
+			// 			.then((res) => {
+			// 				this.totalDiario = res.data;
+			// 		  });
 		},
-
-		watchPlato: function (){
-
-		},
-
-		watchMesa: function (){
-			console.log("mesa sel::", mesa.nombre)
-		},
-
 
 },
 		mounted: function () {

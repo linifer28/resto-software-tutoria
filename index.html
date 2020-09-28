@@ -20,7 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 	<!-- Libs / -->
 		<script type="text/javascript">
-			const API = 'https://crudcrud.com/api/eca1ebf2efbf4fe2b6dfd2e7e3959f8e'
+			const API = 'https://crudcrud.com/api/3498d1f1784f4eb486dc2cfdf5719126'
 		</script>
 
 </head>
@@ -41,10 +41,12 @@
 						<div class="row row-cols-4 vistaMesas__cont--view--in">
 							<div class="col mesaAct" v-if="mesa.estaActiva"   v-for="mesa in mesasActiva"> 
 								<!-- v-on:click="editarMesa" -->
-							<h5>{{mesa.nombre}}</h5>
-							<button v-on:click="editarMesa(mesa._id)">EDITAR MESA</button>
-							<button v-on:click="cerrarMesa(mesa._id)">CERRAR MESA</button>
-						</div>
+								<h5>{{mesa.nombre}}</h5>
+								<div class="btn-group" role="group" aria-label="Basic example">
+								  <button type="button" class="btn btn-secondary" v-on:click="editarMesa(mesa._id)">EDITAR</button>
+								  <button type="button" class="btn btn-secondary"  v-on:click="cerrarMesa(mesa._id)">CERRAR</button>
+								</div>
+							</div>
 						</div>	
 					</div>
 				</div>
